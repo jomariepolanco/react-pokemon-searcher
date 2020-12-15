@@ -7,13 +7,18 @@ import { Container } from 'semantic-ui-react'
 class PokemonPage extends React.Component {
 
   state = {
-    api: []
+    api: [],
+    filteredApi: [],
+    searchTerm: ""
   }
 
   componentDidMount(){
     fetch('http://localhost:3000/pokemon')
     .then(r => r.json())
-    .then(pokemons => this.setState({api: pokemons}))
+    .then(pokemons => {
+      this.setState({api: pokemons})
+      this.setState({filteredApi: pokemons})
+    })
   }
 
   createNewPokemon = (newPokeObj) => {
@@ -37,16 +42,27 @@ class PokemonPage extends React.Component {
     .then(newPoke => this.setState({api: [...this.state.api, newPoke]}))
   }
 
+  filterPokemon = (event) => {
+    this.setState({searchTerm: event.target.value})
+    this.filterApi()
+  }
+
+  filterApi = () => {
+    const newArray = [...this.state.api].filter(poke => poke.name.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
+    this.setState({filteredApi: newArray})
+  }
+
   render() {
+    console.log(this.state.searchTerm)
     return (
       <Container>
         <h1>Pokemon Searcher</h1>
         <br />
         <PokemonForm createNewPokemon={this.createNewPokemon}/>
         <br />
-        <Search />
+        <Search filterPokemon={this.filterPokemon} searchTerm={this.state.searchTerm}/>
         <br />
-        <PokemonCollection pokemons={this.state.api}/>
+        <PokemonCollection pokemons={this.state.filteredApi}/>
       </Container>
     )
   }

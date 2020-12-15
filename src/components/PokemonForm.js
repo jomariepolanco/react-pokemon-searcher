@@ -20,7 +20,6 @@ class PokemonForm extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <div>
         <h3>Add a Pokemon!</h3>
