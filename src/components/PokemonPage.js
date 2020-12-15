@@ -8,7 +8,7 @@ class PokemonPage extends React.Component {
 
   state = {
     api: [],
-    filteredApi: [],
+    // filteredApi: [],
     searchTerm: ""
   }
 
@@ -42,14 +42,12 @@ class PokemonPage extends React.Component {
     .then(newPoke => this.setState({api: [...this.state.api, newPoke]}))
   }
 
-  filterPokemon = (event) => {
+  searchHandler = (event) => {
     this.setState({searchTerm: event.target.value})
-    this.filterApi()
   }
 
-  filterApi = () => {
-    const newArray = [...this.state.api].filter(poke => poke.name.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
-    this.setState({filteredApi: newArray})
+  filterPokemon = () => {
+    return this.state.api.filter(poke => poke.name.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
   }
 
   render() {
@@ -60,9 +58,9 @@ class PokemonPage extends React.Component {
         <br />
         <PokemonForm createNewPokemon={this.createNewPokemon}/>
         <br />
-        <Search filterPokemon={this.filterPokemon} searchTerm={this.state.searchTerm}/>
+        <Search searchHandler={this.searchHandler} searchTerm={this.state.searchTerm}/>
         <br />
-        <PokemonCollection pokemons={this.state.filteredApi}/>
+        <PokemonCollection pokemons={this.filterPokemon()}/>
       </Container>
     )
   }
