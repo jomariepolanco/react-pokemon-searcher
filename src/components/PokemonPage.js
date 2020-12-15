@@ -15,6 +15,7 @@ class PokemonPage extends React.Component {
     .then(r => r.json())
     .then(pokemons => this.setState({api: pokemons}))
   }
+
   render() {
     return (
       <Container>
@@ -24,7 +25,7 @@ class PokemonPage extends React.Component {
         <br />
         <Search />
         <br />
-        <PokemonCollection />
+        <PokemonCollection pokemons={this.state.api}/>
       </Container>
     )
   }
